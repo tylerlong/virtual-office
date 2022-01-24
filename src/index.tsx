@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
+import './index.css';
+
 import {createScene} from './babylon';
 
 class App extends React.Component {
@@ -13,6 +15,4 @@ class App extends React.Component {
   }
 }
 
-const container = document.createElement('div');
-document.body.appendChild(container);
-ReactDOM.render(<App />, container);
+ReactDOM.render(<App />, document.body);

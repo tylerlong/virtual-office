@@ -21,7 +21,7 @@ export const createScene = () => {
     scene
   );
 
-  const box = BABYLON.MeshBuilder.CreateBox('box', {});
+  const box = BABYLON.MeshBuilder.CreateBox('box');
 
   engine.runRenderLoop(() => {
     scene.render();
@@ -29,6 +29,4 @@ export const createScene = () => {
   window.addEventListener('resize', () => {
     engine.resize();
   });
-
-  // return scene;
 };
