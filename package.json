@@ -3,8 +3,14 @@
   "scripts": {
     "serve": "webpack serve"
   },
+  "dependencies": {
+    "babylonjs": "5.0.0-beta.4",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
   "devDependencies": {
     "@types/node": "^17.0.10",
+    "@types/react-dom": "^17.0.11",
     "gts": "^3.1.0",
     "html-webpack-plugin": "^5.5.0",
     "ts-loader": "^9.2.6",
