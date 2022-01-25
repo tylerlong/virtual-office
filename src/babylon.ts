@@ -2,6 +2,11 @@ import * as BABYLON from 'babylonjs';
 
 import tileImage from './tile.jpeg';
 
+const groundWidth = 1000;
+const groundHeight = 1000;
+const tileImageWidth = 2500;
+const tileImageHeight = 2500;
+
 export const init = () => {
   const canvas = document.getElementById('canvas') as HTMLCanvasElement;
   const engine = new BABYLON.Engine(canvas);
@@ -12,13 +17,13 @@ export const init = () => {
 
   const camera = new BABYLON.UniversalCamera(
     'UniversalCamera',
-    new BABYLON.Vector3(0, 10, 50),
+    new BABYLON.Vector3(0, 10, 0),
     scene
   );
   camera.applyGravity = true;
   camera.ellipsoid = new BABYLON.Vector3(10, 10, 10);
   camera.checkCollisions = true;
-  camera.setTarget(new BABYLON.Vector3(0, 10, 0));
+  camera.setTarget(new BABYLON.Vector3(1, 10, 1));
   camera.attachControl(canvas);
 
   const light = new BABYLON.HemisphericLight(
@@ -27,13 +32,6 @@ export const init = () => {
     scene
   );
 
-  const box = BABYLON.MeshBuilder.CreateBox('box', {size: 20});
-  box.checkCollisions = true;
-
-  const groundWidth = 1000;
-  const groundHeight = 1000;
-  const tileImageWidth = 2500;
-  const tileImageHeight = 2500;
   const ground = BABYLON.MeshBuilder.CreateGround(
     'ground',
     {width: groundWidth, height: groundHeight},
