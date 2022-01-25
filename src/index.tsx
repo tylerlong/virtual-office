@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import './index.css';
 
-import {createScene} from './babylon';
+import {init} from './babylon';
 
 class App extends React.Component {
   render() {
@@ -11,8 +11,10 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    createScene();
+    init();
   }
 }
 
-ReactDOM.render(<App />, document.body);
+const container = document.createElement('div');
+document.body.appendChild(container);
+ReactDOM.render(<App />, container);
