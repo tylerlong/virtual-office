@@ -26,22 +26,22 @@ export const init = () => {
   camera.setTarget(new BABYLON.Vector3(1, 10, 1));
   camera.attachControl(canvas);
 
-  const light1 = new BABYLON.HemisphericLight(
+  new BABYLON.HemisphericLight(
     'light1',
     new BABYLON.Vector3(1, -0.25, 0),
     scene
   );
-  const light2 = new BABYLON.HemisphericLight(
+  new BABYLON.HemisphericLight(
     'light2',
     new BABYLON.Vector3(-1, -0.25, 0),
     scene
   );
-  const light3 = new BABYLON.HemisphericLight(
+  new BABYLON.HemisphericLight(
     'light3',
     new BABYLON.Vector3(0, -0.25, 1),
     scene
   );
-  const light4 = new BABYLON.HemisphericLight(
+  new BABYLON.HemisphericLight(
     'light4',
     new BABYLON.Vector3(0, -0.25, -1),
     scene
@@ -82,11 +82,33 @@ export const init = () => {
     scene
   );
   wall2.position = new BABYLON.Vector3(0, wallHeight / 2, -groundDepth / 2);
+  const wall3 = BABYLON.MeshBuilder.CreateBox(
+    'wall3',
+    {
+      width: 1,
+      height: wallHeight,
+      depth: groundDepth,
+    },
+    scene
+  );
+  wall3.position = new BABYLON.Vector3(groundWidth / 2, wallHeight / 2, 0);
+  const wall4 = BABYLON.MeshBuilder.CreateBox(
+    'wall4',
+    {
+      width: 1,
+      height: wallHeight,
+      depth: groundDepth,
+    },
+    scene
+  );
+  wall4.position = new BABYLON.Vector3(-groundWidth / 2, wallHeight / 2, 0);
 
   const wallMaterial = new BABYLON.StandardMaterial('wallMaterial', scene);
   wallMaterial.diffuseColor = new BABYLON.Color3(1, 1, 0);
   wall1.material = wallMaterial;
   wall2.material = wallMaterial;
+  wall3.material = wallMaterial;
+  wall4.material = wallMaterial;
 
   engine.runRenderLoop(() => {
     scene.render();
