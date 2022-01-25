@@ -2,8 +2,8 @@ import * as BABYLON from 'babylonjs';
 
 import tileImage from './tile.jpeg';
 
-const groundWidth = 1000;
-const groundHeight = 1000;
+const groundWidth = 200;
+const groundHeight = 200;
 const tileImageWidth = 2500;
 const tileImageHeight = 2500;
 
