@@ -1,18 +1,24 @@
 import * as BABYLON from 'babylonjs';
 
-import tileImage from './tile3.webp';
+import tileImage from './tile.jpeg';
 
 export const init = () => {
   const canvas = document.getElementById('canvas') as HTMLCanvasElement;
   const engine = new BABYLON.Engine(canvas);
   const scene = new BABYLON.Scene(engine);
 
+  scene.gravity = new BABYLON.Vector3(0, -0.15, 0);
+  scene.collisionsEnabled = true;
+
   const camera = new BABYLON.UniversalCamera(
     'UniversalCamera',
-    new BABYLON.Vector3(0, 30, 50),
+    new BABYLON.Vector3(0, 10, 50),
     scene
   );
-  camera.setTarget(new BABYLON.Vector3(0, 30, 0));
+  camera.applyGravity = true;
+  camera.ellipsoid = new BABYLON.Vector3(10, 10, 10);
+  camera.checkCollisions = true;
+  camera.setTarget(new BABYLON.Vector3(0, 10, 0));
   camera.attachControl(canvas);
 
   const light = new BABYLON.HemisphericLight(
@@ -22,18 +28,24 @@ export const init = () => {
   );
 
   const box = BABYLON.MeshBuilder.CreateBox('box', {size: 20});
+  box.checkCollisions = true;
 
+  const groundWidth = 1000;
+  const groundHeight = 1000;
+  const tileImageWidth = 2500;
+  const tileImageHeight = 2500;
   const ground = BABYLON.MeshBuilder.CreateGround(
     'ground',
-    {width: 1000, height: 1000},
+    {width: groundWidth, height: groundHeight},
     scene
   );
+  ground.checkCollisions = true;
   const groundMaterial = new BABYLON.StandardMaterial('groundMaterial', scene);
   groundMaterial.diffuseTexture = new BABYLON.Texture(tileImage, scene);
   (groundMaterial.diffuseTexture as BABYLON.Texture).uScale =
-    (1000 / 2500) * 100;
+    (groundWidth / tileImageWidth) * 100;
   (groundMaterial.diffuseTexture as BABYLON.Texture).vScale =
-    (1000 / 2500) * 100;
+    (groundHeight / tileImageHeight) * 100;
   ground.material = groundMaterial;
 
   engine.runRenderLoop(() => {
