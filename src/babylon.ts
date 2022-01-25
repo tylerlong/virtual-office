@@ -97,6 +97,13 @@ export const init = () => {
   wall3.checkCollisions = true;
   wall4.checkCollisions = true;
 
+  const roof = BABYLON.MeshBuilder.CreateBox('roof', {
+    width: groundWidth + 1,
+    height: 1,
+    depth: groundDepth + 1,
+  });
+  roof.position = new BABYLON.Vector3(0, wallHeight, 0);
+
   engine.runRenderLoop(() => {
     scene.render();
   });
