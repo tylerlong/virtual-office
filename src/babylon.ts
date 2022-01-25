@@ -26,26 +26,8 @@ export const init = () => {
   camera.setTarget(new BABYLON.Vector3(1, 10, 1));
   camera.attachControl(canvas);
 
-  new BABYLON.HemisphericLight(
-    'light1',
-    new BABYLON.Vector3(1, -0.25, 0),
-    scene
-  );
-  new BABYLON.HemisphericLight(
-    'light2',
-    new BABYLON.Vector3(-1, -0.25, 0),
-    scene
-  );
-  new BABYLON.HemisphericLight(
-    'light3',
-    new BABYLON.Vector3(0, -0.25, 1),
-    scene
-  );
-  new BABYLON.HemisphericLight(
-    'light4',
-    new BABYLON.Vector3(0, -0.25, -1),
-    scene
-  );
+  new BABYLON.HemisphericLight('light', new BABYLON.Vector3(0, 1, 0), scene);
+  new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(1, -1, 0), scene);
 
   const ground = BABYLON.MeshBuilder.CreateGround(
     'ground',
@@ -54,14 +36,14 @@ export const init = () => {
   );
   ground.checkCollisions = true;
   const groundMaterial = new BABYLON.StandardMaterial('groundMaterial', scene);
-  groundMaterial.diffuseTexture = new BABYLON.Texture(tileImage, scene);
-  (groundMaterial.diffuseTexture as BABYLON.Texture).uScale =
-    (groundWidth / tileImageWidth) * 100;
-  (groundMaterial.diffuseTexture as BABYLON.Texture).vScale =
-    (groundDepth / tileImageDepth) * 100;
+  const groundTexture = new BABYLON.Texture(tileImage, scene);
+  groundMaterial.diffuseTexture = groundTexture;
+  groundMaterial.specularTexture = groundTexture;
+  groundTexture.uScale = (groundWidth / tileImageWidth) * 100;
+  groundTexture.vScale = (groundDepth / tileImageDepth) * 100;
   ground.material = groundMaterial;
 
-  const wallHeight = 40;
+  const wallHeight = 100;
   const wall1 = BABYLON.MeshBuilder.CreateBox(
     'wall1',
     {
@@ -104,11 +86,16 @@ export const init = () => {
   wall4.position = new BABYLON.Vector3(-groundWidth / 2, wallHeight / 2, 0);
 
   const wallMaterial = new BABYLON.StandardMaterial('wallMaterial', scene);
-  wallMaterial.diffuseColor = new BABYLON.Color3(1, 1, 0);
+  wallMaterial.diffuseColor = new BABYLON.Color3(0.5, 0.5, 0.5);
+  wallMaterial.specularColor = new BABYLON.Color3(0.5, 0.5, 0.5);
   wall1.material = wallMaterial;
   wall2.material = wallMaterial;
   wall3.material = wallMaterial;
   wall4.material = wallMaterial;
+  wall1.checkCollisions = true;
+  wall2.checkCollisions = true;
+  wall3.checkCollisions = true;
+  wall4.checkCollisions = true;
 
   engine.runRenderLoop(() => {
     scene.render();
