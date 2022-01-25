@@ -1,6 +1,6 @@
 import * as BABYLON from 'babylonjs';
 
-import tileImage from './tile.jpeg';
+import tileImage from './tile3.webp';
 
 export const init = () => {
   const canvas = document.getElementById('canvas') as HTMLCanvasElement;
@@ -25,13 +25,15 @@ export const init = () => {
 
   const ground = BABYLON.MeshBuilder.CreateGround(
     'ground',
-    {width: 10000, height: 10000},
+    {width: 1000, height: 1000},
     scene
   );
   const groundMaterial = new BABYLON.StandardMaterial('groundMaterial', scene);
   groundMaterial.diffuseTexture = new BABYLON.Texture(tileImage, scene);
-  (groundMaterial.diffuseTexture as BABYLON.Texture).uScale = 10000 / 249;
-  (groundMaterial.diffuseTexture as BABYLON.Texture).vScale = 10000 / 249;
+  (groundMaterial.diffuseTexture as BABYLON.Texture).uScale =
+    (1000 / 2500) * 100;
+  (groundMaterial.diffuseTexture as BABYLON.Texture).vScale =
+    (1000 / 2500) * 100;
   ground.material = groundMaterial;
 
   engine.runRenderLoop(() => {

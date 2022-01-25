@@ -26,7 +26,7 @@ const config: Configuration = {
         use: ['style-loader', 'css-loader'],
       },
       {
-        test: /\.jpeg$/,
+        test: /\.(jpeg|webp)$/,
         type: 'asset/resource',
       },
     ],
