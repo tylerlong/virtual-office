@@ -1,65 +1,71 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import RingCentral from '@rc-ex/core';
-import RCV from 'ringcentral-video';
+import {Component} from '@tylerlong/use-proxy/build/react';
 
 import './index.css';
+import {Store} from './models';
+import store from './store';
 
-import {init} from './babylon';
+import {Button, Divider, Input, Spin} from 'antd';
 
-class App extends React.Component {
+class App extends Component<{store: Store}> {
   render() {
+    const {store} = this.props;
+    const heading = <h1>Virtual Office</h1>;
+    if (!store.ready) {
+      return (
+        <>
+          {heading} <Spin size="large" />
+        </>
+      );
+    }
+    if (!store.hasToken) {
+      return (
+        <>
+          {heading}
+          <Button type="primary" onClick={() => store.login()}>
+            Login
+          </Button>
+        </>
+      );
+    }
+    if (!store.inMeeting) {
+      return (
+        <>
+          {heading}
+          <>
+            <Button onClick={() => store.logout()} id="logout-btn">
+              Logout
+            </Button>
+            <p>Enter a meeting ID or a meeting link to continue.</p>
+            <p>Please make sure that the meeting is currently ongoing.</p>
+            <p>
+              At least one of the participants turn on video or do screen share.
+            </p>
+            <Input.Group compact>
+              <Input
+                style={{width: '20rem'}}
+                placeholder="123456789"
+                defaultValue={process.env.RINGCENTRAL_MEETING_ID ?? ''}
+                onChange={e => (store.meetingId = e.target.value)}
+              />
+              <Button
+                type="primary"
+                disabled={!store.isMeetingIdValid}
+                onClick={() => store.joinMeeting()}
+              >
+                Enter RCV Metaverse
+              </Button>
+            </Input.Group>
+            <Divider />
+          </>
+        </>
+      );
+    }
     return <canvas id="canvas"></canvas>;
-  }
-
-  componentDidMount() {
-    init();
   }
 }
 
 const container = document.createElement('div');
 document.body.appendChild(container);
-ReactDOM.render(<App />, container);
-
-const rc = new RingCentral({
-  server: process.env.RINGCENTRAL_SERVER_URL,
-  clientId: process.env.RINGCENTRAL_CLIENT_ID,
-  clientSecret: process.env.RINGCENTRAL_CLIENT_SECRET,
-});
-
-const main = async () => {
-  await rc.authorize({
-    username: process.env.RINGCENTRAL_USERNAME!,
-    extension: process.env.RINGCENTRAL_EXTENSION,
-    password: process.env.RINGCENTRAL_PASSWORD!,
-  });
-
-  const createVideoElement = (e: RTCTrackEvent) => {
-    const videoElement = document.createElement('video') as HTMLVideoElement;
-    videoElement.id = `video-${e.track.id}`;
-    videoElement.autoplay = true;
-    videoElement.setAttribute('width', '400');
-    document.body.appendChild(videoElement);
-    videoElement.srcObject = e.streams[0];
-  };
-  const removeVideoElement = (e: RTCTrackEvent) => {
-    document.getElementById(`video-${e.track.id}`)?.remove();
-  };
-
-  // sample: const rcv = new RCV(rc, 987612345);
-  const rcv = new RCV(rc, process.env.RINGCENTRAL_SHORT_MEETING_ID!);
-
-  rcv.on('videoTrackEvent', (e: RTCTrackEvent) => {
-    createVideoElement(e);
-    e.track.onmute = () => {
-      removeVideoElement(e);
-    };
-    e.track.onunmute = () => {
-      createVideoElement(e);
-    };
-  });
-
-  await rcv.join();
-};
-
-main();
+ReactDOM.render(<App store={store} />, container);
