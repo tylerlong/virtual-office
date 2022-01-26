@@ -54,7 +54,7 @@ class App extends Component<{store: Store}> {
                 disabled={!store.isMeetingIdValid}
                 onClick={() => store.joinMeeting()}
               >
-                Enter RCV Metaverse
+                Join RCV Meeting
               </Button>
             </Input.Group>
             <Divider />

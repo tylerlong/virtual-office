@@ -1,5 +1,6 @@
 import localforage from 'localforage';
 import AuthorizeUriExtension from '@rc-ex/authorize-uri';
+import waitFor from 'wait-for-async';
 
 import {
   CODE,
@@ -9,6 +10,8 @@ import {
 } from './constants';
 import {checkSavedToken} from './utils';
 import rc from './ringcentral';
+import store from './store';
+import {init3D} from './babylon';
 
 export class Store {
   ready = false;
@@ -65,5 +68,9 @@ export class Store {
     });
   }
 
-  async joinMeeting() {}
+  async joinMeeting() {
+    store.inMeeting = true;
+    await waitFor({interval: 1000});
+    init3D();
+  }
 }

@@ -9,7 +9,7 @@ const tileImageDepth = 2500;
 const cameraHeight = 10;
 const wallHeight = 100;
 
-export const init = () => {
+export const init3D = () => {
   const canvas = document.getElementById('canvas') as HTMLCanvasElement;
   const engine = new BABYLON.Engine(canvas);
   const scene = new BABYLON.Scene(engine);
