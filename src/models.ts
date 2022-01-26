@@ -15,7 +15,7 @@ export class Store {
   hasToken = false;
   loginUrl = '';
   inMeeting = false;
-  meetingId = process.env.RINGCENTRAL_MEETING_ID ?? '';
+  meetingId = process.env.RINGCENTRAL_SHORT_MEETING_ID ?? '';
 
   get isMeetingIdValid() {
     return /\b\d{9}\b/.test(this.meetingId);

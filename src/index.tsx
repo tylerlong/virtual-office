@@ -46,7 +46,7 @@ class App extends Component<{store: Store}> {
               <Input
                 style={{width: '20rem'}}
                 placeholder="123456789"
-                defaultValue={process.env.RINGCENTRAL_MEETING_ID ?? ''}
+                defaultValue={process.env.RINGCENTRAL_SHORT_MEETING_ID ?? ''}
                 onChange={e => (store.meetingId = e.target.value)}
               />
               <Button
