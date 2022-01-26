@@ -1,7 +1,8 @@
 /* eslint-disable node/no-unpublished-import */
-import {Configuration} from 'webpack';
+import {Configuration, DefinePlugin} from 'webpack';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
 import path from 'path';
+import dotenv from 'dotenv-override-true';
 
 const config: Configuration = {
   devtool: 'source-map',
@@ -34,6 +35,9 @@ const config: Configuration = {
   plugins: [
     new HtmlWebpackPlugin({
       title: 'Virtual Office',
+    }),
+    new DefinePlugin({
+      'process.env': JSON.stringify(dotenv.config().parsed),
     }),
   ],
   resolve: {

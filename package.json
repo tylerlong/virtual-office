@@ -5,14 +5,17 @@
     "release": "webpack --mode production"
   },
   "dependencies": {
+    "@rc-ex/core": "^0.10.5",
     "babylonjs": "5.0.0-beta.4",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "ringcentral-video": "^0.2.0"
   },
   "devDependencies": {
     "@types/node": "^17.0.10",
     "@types/react-dom": "^17.0.11",
     "css-loader": "^6.5.1",
+    "dotenv-override-true": "^6.2.2",
     "gts": "^3.1.0",
     "html-webpack-plugin": "^5.5.0",
     "style-loader": "^3.3.1",
