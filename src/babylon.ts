@@ -33,7 +33,7 @@ export const init3D = () => {
   camera.attachControl(canvas);
 
   new BABYLON.HemisphericLight('light', new BABYLON.Vector3(0, 1, 0), scene);
-  new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(1, -1, 0), scene);
+  new BABYLON.HemisphericLight('light1', new BABYLON.Vector3(-1, -1, 0), scene);
 
   const ground = BABYLON.MeshBuilder.CreateGround(
     'ground',
@@ -121,7 +121,6 @@ export const init3D = () => {
   const screenHeight = 90;
   const videoElements = document.getElementsByClassName('video-element');
   for (const videoElement of Array.from(videoElements) as HTMLVideoElement[]) {
-    console.log(videoElement);
     const screen = BABYLON.MeshBuilder.CreatePlane(
       videoElement.id + '-screen',
       {width: screenWidth, height: screenHeight},
