@@ -117,6 +117,31 @@ export const init3D = () => {
     });
   }
 
+  const screenWidth = 160;
+  const screenHeight = 90;
+  const videoElements = document.getElementsByClassName('video-element');
+  for (const videoElement of Array.from(videoElements)) {
+    console.log(videoElement);
+    const screen = BABYLON.MeshBuilder.CreatePlane(
+      videoElement.id,
+      {width: screenWidth, height: screenHeight},
+      scene
+    );
+    screen.rotate(BABYLON.Axis.Y, Math.PI / 2, BABYLON.Space.WORLD);
+    screen.position = new BABYLON.Vector3(
+      groundDepth / 2 - 1,
+      screenHeight / 2 + (wallHeight - screenHeight) / 2,
+      0
+    );
+    screen.checkCollisions = true;
+    const screenMaterial = new BABYLON.StandardMaterial(
+      'screenMaterial',
+      scene
+    );
+    screenMaterial.diffuseColor = new BABYLON.Color3(1, 0, 0);
+    screen.material = screenMaterial;
+  }
+
   engine.runRenderLoop(() => {
     scene.render();
   });
