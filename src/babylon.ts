@@ -2,14 +2,25 @@ import * as BABYLON from 'babylonjs';
 
 import tileImage from './tile.jpeg';
 
-const groundWidth = 300;
-const groundDepth = 300;
+const screenWidth = 160;
+const screenHeight = 90;
+let groundWidth = 300;
+let groundDepth = 300;
 const tileImageWidth = 2500;
 const tileImageDepth = 2500;
 const cameraHeight = 10;
-const wallHeight = 100;
+let wallHeight = 100;
+const videoMargin = 5;
 
 export const init3D = () => {
+  const videoElements = Array.from(
+    document.getElementsByClassName('video-element')
+  ) as HTMLVideoElement[];
+  groundWidth = groundDepth =
+    videoElements.length * screenWidth +
+    videoMargin +
+    videoElements.length * videoMargin;
+  wallHeight = screenHeight + videoMargin * 2;
   const canvas = document.getElementById('canvas') as HTMLCanvasElement;
   const engine = new BABYLON.Engine(canvas);
   const scene = new BABYLON.Scene(engine);
@@ -117,10 +128,8 @@ export const init3D = () => {
     });
   }
 
-  const screenWidth = 160;
-  const screenHeight = 90;
-  const videoElements = document.getElementsByClassName('video-element');
-  for (const videoElement of Array.from(videoElements) as HTMLVideoElement[]) {
+  let index = 0;
+  for (const videoElement of videoElements) {
     const screen = BABYLON.MeshBuilder.CreatePlane(
       videoElement.id + '-screen',
       {width: screenWidth, height: screenHeight},
@@ -130,7 +139,11 @@ export const init3D = () => {
     screen.position = new BABYLON.Vector3(
       groundDepth / 2 - 1,
       screenHeight / 2 + (wallHeight - screenHeight) / 2,
-      0
+      groundWidth / 2 -
+        screenWidth / 2 -
+        index * screenWidth -
+        videoMargin -
+        index * videoMargin
     );
     screen.checkCollisions = true;
     const screenMaterial = new BABYLON.StandardMaterial(
@@ -145,9 +158,9 @@ export const init3D = () => {
       true
     );
     videoTexture.vScale = -1;
-    videoTexture.uScale = -1;
     screenMaterial.diffuseTexture = videoTexture;
     screen.material = screenMaterial;
+    index += 1;
   }
 
   engine.runRenderLoop(() => {
