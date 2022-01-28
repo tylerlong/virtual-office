@@ -109,6 +109,14 @@ export const init3D = () => {
   });
   roof.position = new BABYLON.Vector3(0, wallHeight, 0);
 
+  // enable VR for Oculus
+  if (navigator.userAgent.includes('OculusBrowser/')) {
+    const env = scene.createDefaultEnvironment()!;
+    scene.createDefaultXRExperienceAsync({
+      floorMeshes: [env.ground!],
+    });
+  }
+
   engine.runRenderLoop(() => {
     scene.render();
   });
