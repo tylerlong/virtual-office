@@ -1,6 +1,7 @@
 import localforage from 'localforage';
 import AuthorizeUriExtension from '@rc-ex/authorize-uri';
-import waitFor from 'wait-for-async';
+import {debounce} from 'lodash';
+import RCV from 'ringcentral-video';
 
 import {
   CODE,
@@ -18,6 +19,7 @@ export class Store {
   hasToken = false;
   loginUrl = '';
   inMeeting = false;
+  streamsReady = false;
   meetingId = process.env.RINGCENTRAL_SHORT_MEETING_ID ?? '';
 
   get isMeetingIdValid() {
@@ -70,7 +72,50 @@ export class Store {
 
   async joinMeeting() {
     store.inMeeting = true;
-    await waitFor({interval: 1000});
-    init3D();
+    const shortId = this.meetingId.match(/\b\d{9}\b/)![0];
+    const rcv = new RCV(rc, shortId);
+    const createVideoElement = (e: RTCTrackEvent) => {
+      const videoElement = document.createElement('video') as HTMLVideoElement;
+      videoElement.id = `video-${e.track.id}`;
+      videoElement.autoplay = true;
+      videoElement.setAttribute('width', '400');
+      videoElement.setAttribute('class', 'video-element');
+      document.body.appendChild(videoElement);
+      videoElement.srcObject = e.streams[0];
+      videoElement.style.display = 'none';
+    };
+    const removeVideoElement = (e: RTCTrackEvent) => {
+      document.getElementById(`video-${e.track.id}`)?.remove();
+    };
+    const debouncedCreateMetaverse = debounce(
+      () => {
+        if (!this.streamsReady) {
+          this.streamsReady = true;
+          init3D();
+        }
+      },
+      10000,
+      {
+        trailing: true,
+        leading: false,
+        maxWait: 60000,
+      }
+    );
+    rcv.on('videoTrackEvent', (e: RTCTrackEvent) => {
+      createVideoElement(e);
+      debouncedCreateMetaverse();
+      console.log(e.track.id, 'track');
+      e.track.onmute = () => {
+        console.log(e.track.id, 'mute');
+        removeVideoElement(e);
+        debouncedCreateMetaverse();
+      };
+      e.track.onunmute = () => {
+        console.log(e.track.id, 'unmute');
+        createVideoElement(e);
+        debouncedCreateMetaverse();
+      };
+    });
+    await rcv.join();
   }
 }

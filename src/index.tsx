@@ -62,7 +62,12 @@ class App extends Component<{store: Store}> {
         </>
       );
     }
-    return <canvas id="canvas"></canvas>;
+    return (
+      <>
+        {!store.streamsReady && <Spin size="large" />}
+        <canvas id="canvas"></canvas>
+      </>
+    );
   }
 }
 
