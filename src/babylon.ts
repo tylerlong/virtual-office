@@ -120,10 +120,10 @@ export const init3D = () => {
   const screenWidth = 160;
   const screenHeight = 90;
   const videoElements = document.getElementsByClassName('video-element');
-  for (const videoElement of Array.from(videoElements)) {
+  for (const videoElement of Array.from(videoElements) as HTMLVideoElement[]) {
     console.log(videoElement);
     const screen = BABYLON.MeshBuilder.CreatePlane(
-      videoElement.id,
+      videoElement.id + '-screen',
       {width: screenWidth, height: screenHeight},
       scene
     );
@@ -138,7 +138,16 @@ export const init3D = () => {
       'screenMaterial',
       scene
     );
-    screenMaterial.diffuseColor = new BABYLON.Color3(1, 0, 0);
+    const videoTexture = new BABYLON.VideoTexture(
+      videoElement.id + '-texture',
+      videoElement,
+      scene,
+      true,
+      true
+    );
+    videoTexture.vScale = -1;
+    videoTexture.uScale = -1;
+    screenMaterial.diffuseTexture = videoTexture;
     screen.material = screenMaterial;
   }
 
