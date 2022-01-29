@@ -4293,10 +4293,10 @@ rimraf@^3.0.2:
   dependencies:
     glob "^7.1.3"
 
-ringcentral-video@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/ringcentral-video/-/ringcentral-video-0.2.0.tgz#c834998306322abf28cd3bf4d39ae5f744c32db9"
-  integrity sha512-MLA8+//AxRZKZb4ISbVftytjgxL+WpySaP1934AjblDmNU9U+TzEseoqt6mB11jE1CN0DsvX7c1iJNoAZmquuA==
+ringcentral-video@^0.2.1:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/ringcentral-video/-/ringcentral-video-0.2.1.tgz#34ba8fb8473779096ed04b74c40ab5c5d3e756e8"
+  integrity sha512-MhlNnAl9/KCyPC/aNOBv84EXPbWyAxg6Tzo+CC6f71HIlsSTm06/KEBPeXUSWBKhl4I9fcYjyuq2CKaj6e5TqA==
   dependencies:
     isomorphic-ws "^4.0.1"
     wait-for-async "^0.6.0"

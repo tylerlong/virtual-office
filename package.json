@@ -17,7 +17,7 @@
     "lodash": "^4.17.21",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "ringcentral-video": "^0.2.0",
+    "ringcentral-video": "^0.2.1",
     "wait-for-async": "^0.6.0"
   },
   "devDependencies": {

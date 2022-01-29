@@ -73,7 +73,28 @@ export class Store {
   async joinMeeting() {
     store.inMeeting = true;
     const shortId = this.meetingId.match(/\b\d{9}\b/)![0];
-    const rcv = new RCV(rc, shortId);
+    let mediaStream: MediaStream;
+    if (navigator.userAgent.includes('OculusBrowser/')) {
+      // oculus doesn't have camera
+      mediaStream = await navigator.mediaDevices.getUserMedia({
+        video: false,
+        audio: true,
+      });
+      // add fake video from canvas
+      const canvas = document.createElement('canvas') as HTMLCanvasElement;
+      canvas.style.display = 'none';
+      document.body.appendChild(canvas);
+      const canvasStream = canvas.captureStream();
+      for (const track of canvasStream.getVideoTracks()) {
+        mediaStream.addTrack(track);
+      }
+    } else {
+      mediaStream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true,
+      });
+    }
+    const rcv = new RCV(rc, shortId, mediaStream);
     const createVideoElement = (e: RTCTrackEvent) => {
       const videoElement = document.createElement('video') as HTMLVideoElement;
       videoElement.id = `video-${e.track.id}`;
